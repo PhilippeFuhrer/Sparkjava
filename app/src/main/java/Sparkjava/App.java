@@ -5,12 +5,18 @@ package Sparkjava;
 
 import spark.Spark;
 
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+
+
+
+    public static String getGreeting() {
+        return "This is the greeting method";
+                        
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){ 
         Spark.get("/users/0/welcome", (req, res) -> {return "Team Tim and Philippe (+change)";});
+        Spark.get("/users/0/main", (req, res) -> {return getGreeting();});
     }
 }
