@@ -3,20 +3,55 @@
  */
 package Sparkjava;
 
-import spark.Spark;
+import static spark.Spark.*;
+import java.util.ArrayList;
+import com.google.gson;     // import from Gson 2.8.6 API
 
+final class User {
+
+    private String firstName;
+    private String lastName;
+    private String email;
+    private int ID;
+
+public User(String firstName, String lastName, String email, int ID){
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.ID = ID;
+}
+
+public String getName(){
+    return firstName +" "+ lastName;
+}
+
+}
 
 public class App {
 
+    static ArrayList<User> users = new ArrayList<User>();
 
-
-    public static String getGreeting() {
-        return "This is the greeting method";
-                        
-    }
 
     public static void main(String[] args){ 
-        Spark.get("/users/0/welcome", (req, res) -> {return "Team Tim and Philippe (+change)";});
-        Spark.get("/users/0/main", (req, res) -> {return getGreeting();});
+
+        users.add(new User("Tom", "Meier", "Tom.Meier@hotmail.com", 0));
+        users.add(new User("Luna", "Müller", "Luna.Mueller@hotmail.com", 1));
+        users.add(new User("Hans", "Frey", "Hans.Frey@hotmail.com", 2));
+
+        get("/users/:id/welcome", (req, res) -> {
+            String idString = req.params("id");
+            int id = Integer.parseInt(idString);
+            String name = users.get(id).getName();
+            return "Hello " + name; 
+        });
+
+        get("/users", (req, res) -> {
+            return gson.toJson(users);
+        }
+
+        post("/users", (req, res) -> {
+            String userName = req.queryParams("name")
+
+            ;});
     }
 }
